@@ -4,7 +4,8 @@
 
 ## Cách dùng nhanh
 
-- **Nơi lưu:** lần đầu chọn **Choose levels folder** và trỏ vào thư mục `level-data/` của project (Chrome / Edge) để game dùng luôn collection **Main** làm thứ tự chơi; hoặc **Use browser storage** để thử (có sẵn 6 level mẫu, chỉ nằm trong trình duyệt đó).
+- **Nơi lưu:** mở lần đầu, editor tự dùng **Browser storage** và nạp sẵn toàn bộ level của game (chỉ nằm trong trình duyệt đó). Muốn sửa level của game thì bấm **Choose folder** và trỏ vào thư mục `level-data/` của project (Chrome / Edge); folder trống sẽ được nạp sẵn level của game.
+- Nút **★** ở panel Levels: thêm các level của game còn thiếu (không ghi đè level đang có).
 - **Phím tắt:** V chọn · P sửa ống · 1–8 cọ màu · 0 tẩy · R xoay · D nhân bản · Del xoá · Ctrl+Z / Ctrl+Y · Ctrl+S lưu · Space chơi thử · Esc bỏ chọn / thoát chơi thử.
 - **Ống (P):** kéo điểm, bấm ⊕ để thêm điểm, bấm đúp điểm để xoá. Điểm vàng là điểm bắt đầu.
 - **Cổng:** chấm xanh = tự động, vàng = đặt tay; kéo chấm dọc ống để đặt tay.

@@ -112,17 +112,22 @@ export class App {
         const kind = await metaGet<string>('storage');
         if (kind === 'browser') return this.useStore(new LevelStore(new BrowserVFS()));
         const saved = await savedFolder().catch(() => null);
-        if (saved?.granted) await this.useStore(new LevelStore(new FolderVFS(saved.handle)));
-        else {
-            this.pendingFolder = saved?.handle ?? null;
-            this.renderAll();
-        }
+        if (saved?.granted) return this.useStore(new LevelStore(new FolderVFS(saved.handle)));
+        // lần đầu (hoặc folder cũ cần cấp quyền lại): mở ngay Browser storage với level của game;
+        // vẫn chọn / reconnect folder được ở thanh trên cùng hoặc panel Levels
+        this.pendingFolder = saved?.handle ?? null;
+        await this.useStore(new LevelStore(new BrowserVFS()));
+        if (this.pendingFolder) this.setStatus(`Đang dùng Browser storage. Bấm "Reconnect ${this.pendingFolder.name}/" ở panel Levels để quay lại folder.`);
     }
 
     async useStore(store: LevelStore) {
         this.store = store;
         await metaSet('storage', store.fs.kind);
-        if (store.fs.kind === 'browser' && (await store.listLevels()).length === 0) await this.seedSamples(store);
+        // nơi lưu trống (browser storage mới hoặc folder mới): nạp sẵn level của game
+        if ((await store.listLevels()).length === 0 && (await store.collections()).length === 0) {
+            await this.seedSamples(store);
+            this.setStatus(`Đã nạp ${Object.keys(SAMPLE_LEVELS).length} level của game vào ${store.fs.label}`);
+        }
         await this.reload();
         const draft = await store.readDraft();
         if (draft && this.levels.some((l) => l.id === draft.id)) {
@@ -136,6 +141,29 @@ export class App {
     }
 
     /** Browser storage trống: nạp sẵn level và collection của game để thử */
+    /** thêm các level của game còn thiếu (theo id) – không ghi đè level đang có */
+    async addGameLevels() {
+        const store = this.store;
+        if (!store) return;
+        const have = new Set((await store.listLevels()).map((l) => l.id));
+        let n = 0;
+        for (const lv of Object.values(SAMPLE_LEVELS)) {
+            if (have.has(lv.id)) continue;
+            await store.fs.write(`levels/${lv.id}.json`, JSON.stringify(lv, null, 1) + '\n');
+            n++;
+        }
+        const cols = await store.collections();
+        if (!cols.some((c) => c.name === 'Main')) {
+            const main = (Object.values(SAMPLE_COLS)[0]?.collections ?? []).find((c) => c.name === 'Main');
+            if (main) {
+                cols.push(structuredClone(main));
+                await store.saveCollection(cols[cols.length - 1], null, cols);
+            }
+        }
+        await this.reload();
+        this.setStatus(n ? `Đã thêm ${n} level của game (level trùng id được giữ nguyên)` : 'Đã có đủ level của game');
+    }
+
     private async seedSamples(store: LevelStore) {
         for (const lv of Object.values(SAMPLE_LEVELS)) await store.fs.write(`levels/${lv.id}.json`, JSON.stringify(lv, null, 1) + '\n');
         const cols = Object.values(SAMPLE_COLS)[0]?.collections ?? [];
@@ -579,16 +607,19 @@ export class App {
                 this.pendingFolder ? h('button', { class: 'primary', onClick: () => void this.reconnectFolder() }, `Reconnect ${this.pendingFolder.name}/`) : null,
                 canPickFolder() ? h('button', { class: this.pendingFolder ? '' : 'primary', onClick: () => void this.chooseFolder() }, 'Choose levels folder') : h('div', { class: 'hint' }, 'Chọn folder chỉ có trên Chrome / Edge.'),
                 h('button', { onClick: () => this.useBrowser() }, 'Use browser storage'),
-                h('div', { class: 'hint' }, 'Folder: chọn thư mục level-data của project để game dùng luôn collection "Main". Browser storage: lưu trong trình duyệt này, có sẵn 6 level mẫu.'),
+                h('div', { class: 'hint' }, `Folder: chọn thư mục level-data của project để game dùng luôn collection "Main" (folder trống sẽ được nạp sẵn level của game). Browser storage: lưu trong trình duyệt này, có sẵn ${Object.keys(SAMPLE_LEVELS).length} level của game.`),
             ));
             return;
         }
+        if (this.pendingFolder && this.store.fs.kind === 'browser')
+            body.append(h('button', { class: 'primary', style: 'width:100%;margin-bottom:8px', onClick: () => void this.reconnectFolder() }, `Reconnect ${this.pendingFolder.name}/`));
         body.append(
             h('div', { class: 'row', style: 'margin-bottom:8px' },
                 h('button', { title: 'New level', 'aria-label': 'New level', onClick: () => void this.newLevel() }, '+'),
                 h('button', { title: 'Duplicate', 'aria-label': 'Duplicate', disabled: !this.cur, onClick: () => void this.duplicate() }, '⧉'),
                 h('button', { title: 'Import JSON files', 'aria-label': 'Import files', onClick: () => this.pickFiles(false) }, '⇩'),
                 h('button', { title: 'Import a folder', 'aria-label': 'Import folder', onClick: () => this.pickFiles(true) }, '▤'),
+                h('button', { title: `Thêm level của game còn thiếu (${Object.keys(SAMPLE_LEVELS).length} level, không ghi đè)`, 'aria-label': 'Add game levels', onClick: () => void this.addGameLevels() }, '★'),
                 h('span', { class: 'spacer' }),
                 h('button', { class: 'danger', title: 'Delete', 'aria-label': 'Delete level', disabled: !this.cur, onClick: () => void this.deleteLevel() }, '🗑'),
             ),
