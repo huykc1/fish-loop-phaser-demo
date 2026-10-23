@@ -6,8 +6,7 @@ Quy trình để Claude Code tạo thêm asset bằng tài khoản ChatGPT của
 
 - Mở Chrome, đăng nhập chatgpt.com, bật extension Claude in Chrome.
 - Tạo sẵn 1 cuộc trò chuyện / project trên ChatGPT dành riêng cho asset của Fish Loop và gửi link cho Claude.
-  Hiện dùng: cuộc trò chuyện **"Tạo asset hình ảnh"** trong project HUYKC
-  (`(link lưu trong .claude/chatgpt-task.local.md, không công khai)`).
+  Link cuộc trò chuyện **không ghi trong docs** (docs public): Claude đọc từ file `.claude/chatgpt-task.local.md` trên máy designer (file này không được commit).
   Link dạng `chatgpt.com/share/...` chỉ là bản chụp để xem, không gửi tin nhắn vào được.
 - Claude không đăng nhập hộ. Captcha hay xác minh tài khoản thì designer tự xử lý.
 

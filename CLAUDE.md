@@ -17,4 +17,5 @@ Game xếp cá theo màu (Phaser 4 + TypeScript + Vite), port từ bản PixiJS 
 
 ## Lệnh
 - `npm run dev` (port 8080), `npm test`, `npm run solve`, `npm run build`, `npm run build:site`
+- Tạo asset bằng ChatGPT: quy trình ở `docs/guide/assets.md`; link cuộc trò chuyện nằm trong `.claude/chatgpt-task.local.md` (chỉ trên máy, không commit, không ghi vào docs).
 - Khi dev: `window.__fishloop` có `sim`, `start(i)`, `speed(v)`, `autoplay()`; POST `/__snap?name=x` lưu ảnh canvas vào `.snaps/`.
