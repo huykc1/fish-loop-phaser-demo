@@ -1,0 +1,160 @@
+{
+ "id": 10,
+ "name": "Ô vuông",
+ "status": "WIP",
+ "category": "",
+ "pipe": {
+  "points": [
+   [
+    220,
+    680
+   ],
+   [
+    860,
+    680
+   ],
+   [
+    860,
+    1240
+   ],
+   [
+    220,
+    1240
+   ]
+  ],
+  "cornerRadius": 120
+ },
+ "pipeSpeed": 220,
+ "slotLength": 90,
+ "fishPerUnit": 5,
+ "pipeLimit": 5,
+ "busScale": 0.55,
+ "buses": [
+  {
+   "x": 380,
+   "y": 452,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [
+    "green",
+    "orange",
+    "green",
+    "pink"
+   ],
+   "portS": null
+  },
+  {
+   "x": 540,
+   "y": 452,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [
+    "purple",
+    "pink",
+    "blue",
+    "purple"
+   ],
+   "portS": null
+  },
+  {
+   "x": 700,
+   "y": 452,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [
+    "cyan",
+    "cyan",
+    "cyan",
+    "yellow"
+   ],
+   "portS": null
+  },
+  {
+   "x": 632,
+   "y": 840,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "pink",
+    "red",
+    "orange",
+    "blue"
+   ],
+   "portS": null
+  },
+  {
+   "x": 632,
+   "y": 960,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "purple",
+    "cyan",
+    "red",
+    "orange"
+   ],
+   "portS": null
+  },
+  {
+   "x": 632,
+   "y": 1080,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "purple",
+    "red",
+    "yellow",
+    "yellow"
+   ],
+   "portS": null
+  },
+  {
+   "x": 320,
+   "y": 1468,
+   "rot": 270,
+   "capacity": 4,
+   "stack": [
+    "blue",
+    "yellow",
+    "green",
+    "orange"
+   ],
+   "portS": null
+  },
+  {
+   "x": 460,
+   "y": 1468,
+   "rot": 270,
+   "capacity": 4,
+   "stack": [
+    "green",
+    "red",
+    "pink",
+    "blue"
+   ],
+   "portS": null
+  },
+  {
+   "x": 600,
+   "y": 1468,
+   "rot": 270,
+   "capacity": 4,
+   "stack": [],
+   "portS": null
+  }
+ ],
+ "spareSlots": [
+  {
+   "x": 740,
+   "y": 1468,
+   "rot": 270
+  }
+ ],
+ "boosters": {
+  "undo": 3,
+  "shuffle": 2,
+  "addBus": 1
+ },
+ "seed": 628384,
+ "goal": 8
+}

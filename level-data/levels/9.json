@@ -1,0 +1,194 @@
+{
+ "id": 9,
+ "name": "Hai bờ",
+ "status": "WIP",
+ "category": "",
+ "pipe": {
+  "points": [
+   [
+    180,
+    820
+   ],
+   [
+    900,
+    820
+   ],
+   [
+    900,
+    1180
+   ],
+   [
+    180,
+    1180
+   ]
+  ],
+  "cornerRadius": 150
+ },
+ "pipeSpeed": 220,
+ "slotLength": 90,
+ "fishPerUnit": 5,
+ "pipeLimit": 5,
+ "busScale": 0.55,
+ "buses": [
+  {
+   "x": 250,
+   "y": 592,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [
+    "white",
+    "orange",
+    "blue",
+    "blue"
+   ],
+   "portS": null
+  },
+  {
+   "x": 390,
+   "y": 592,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [
+    "brown",
+    "green",
+    "red",
+    "pink"
+   ],
+   "portS": null
+  },
+  {
+   "x": 530,
+   "y": 592,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [
+    "blue",
+    "green",
+    "orange",
+    "orange"
+   ],
+   "portS": null
+  },
+  {
+   "x": 670,
+   "y": 592,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [
+    "yellow",
+    "cyan",
+    "yellow",
+    "green"
+   ],
+   "portS": null
+  },
+  {
+   "x": 810,
+   "y": 592,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [
+    "pink",
+    "pink",
+    "pink",
+    "red"
+   ],
+   "portS": null
+  },
+  {
+   "x": 392,
+   "y": 1000,
+   "rot": 180,
+   "capacity": 4,
+   "stack": [
+    "brown",
+    "white",
+    "purple",
+    "white"
+   ],
+   "portS": null
+  },
+  {
+   "x": 684,
+   "y": 1000,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "yellow",
+    "red",
+    "purple",
+    "purple"
+   ],
+   "portS": null
+  },
+  {
+   "x": 230,
+   "y": 1408,
+   "rot": 270,
+   "capacity": 4,
+   "stack": [
+    "cyan",
+    "cyan",
+    "white",
+    "purple"
+   ],
+   "portS": null
+  },
+  {
+   "x": 350,
+   "y": 1408,
+   "rot": 270,
+   "capacity": 4,
+   "stack": [
+    "yellow",
+    "cyan",
+    "brown",
+    "blue"
+   ],
+   "portS": null
+  },
+  {
+   "x": 470,
+   "y": 1408,
+   "rot": 270,
+   "capacity": 4,
+   "stack": [
+    "orange",
+    "brown",
+    "red",
+    "green"
+   ],
+   "portS": null
+  },
+  {
+   "x": 590,
+   "y": 1408,
+   "rot": 270,
+   "capacity": 4,
+   "stack": [],
+   "portS": null
+  },
+  {
+   "x": 710,
+   "y": 1408,
+   "rot": 270,
+   "capacity": 4,
+   "stack": [],
+   "portS": null
+  }
+ ],
+ "spareSlots": [
+  {
+   "x": 830,
+   "y": 1408,
+   "rot": 270
+  }
+ ],
+ "boosters": {
+  "undo": 3,
+  "shuffle": 2,
+  "addBus": 1
+ },
+ "seed": 2932421,
+ "goal": 10
+}

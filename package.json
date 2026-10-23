@@ -1,0 +1,32 @@
+{
+  "name": "fish-loop-phaser-demo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "build:site": "bash scripts/build-site.sh",
+    "release": "bash scripts/release.sh",
+    "release:latest": "bash scripts/release.sh latest",
+    "test": "vitest run",
+    "solve": "vite-node scripts/solveAll.ts",
+    "build:editor": "tsc --noEmit && vite build --config vite.editor.config.ts"
+  },
+  "dependencies": {
+    "phaser": "^4.2.1"
+  },
+  "devDependencies": {
+    "@fontsource/fredoka": "^5.2.8",
+    "typescript": "^7.0.2",
+    "vite": "^5.4.21",
+    "vite-node": "^3.2.4",
+    "vitepress": "^1.6.4",
+    "vitest": "^3.2.4"
+  }
+}

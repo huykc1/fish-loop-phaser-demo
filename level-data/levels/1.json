@@ -1,0 +1,87 @@
+{
+ "id": 1,
+ "name": "Làm quen",
+ "pipe": {
+  "points": [
+   [
+    100,
+    330
+   ],
+   [
+    980,
+    330
+   ],
+   [
+    980,
+    1600
+   ],
+   [
+    100,
+    1600
+   ]
+  ],
+  "cornerRadius": 150,
+  "inlet": {
+   "s": 0
+  },
+  "outlet": {
+   "s": 0.6
+  }
+ },
+ "pipeSpeed": 220,
+ "slotLength": 95,
+ "fishPerUnit": 5,
+ "pipeLimit": 5,
+ "buses": [
+  {
+   "x": 540,
+   "y": 490,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "red",
+    "red",
+    "red",
+    "blue"
+   ],
+   "portS": null
+  },
+  {
+   "x": 540,
+   "y": 805,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "blue",
+    "blue",
+    "blue",
+    "red"
+   ],
+   "portS": null
+  },
+  {
+   "x": 540,
+   "y": 1125,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [],
+   "portS": null
+  }
+ ],
+ "spareSlots": [
+  {
+   "x": 545,
+   "y": 1405,
+   "rot": 0
+  }
+ ],
+ "boosters": {
+  "undo": 3,
+  "shuffle": 1,
+  "addBus": 1
+ },
+ "seed": 1,
+ "goal": 2,
+ "status": "WIP",
+ "category": ""
+}

@@ -1,0 +1,100 @@
+{
+ "id": 3,
+ "name": "Ba màu",
+ "pipe": {
+  "points": [
+   [
+    100,
+    330
+   ],
+   [
+    980,
+    330
+   ],
+   [
+    980,
+    1600
+   ],
+   [
+    100,
+    1600
+   ]
+  ],
+  "cornerRadius": 150,
+  "inlet": {
+   "s": 0
+  },
+  "outlet": {
+   "s": 0.6
+  }
+ },
+ "pipeSpeed": 220,
+ "slotLength": 95,
+ "fishPerUnit": 5,
+ "pipeLimit": 5,
+ "buses": [
+  {
+   "x": 540,
+   "y": 500,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "red",
+    "red",
+    "yellow",
+    "blue"
+   ],
+   "portS": null
+  },
+  {
+   "x": 540,
+   "y": 735,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "yellow",
+    "yellow",
+    "blue",
+    "red"
+   ],
+   "portS": null
+  },
+  {
+   "x": 540,
+   "y": 970,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "blue",
+    "blue",
+    "red",
+    "yellow"
+   ],
+   "portS": null
+  },
+  {
+   "x": 540,
+   "y": 1205,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [],
+   "portS": null
+  }
+ ],
+ "spareSlots": [
+  {
+   "x": 540,
+   "y": 1440,
+   "rot": 0
+  }
+ ],
+ "boosters": {
+  "undo": 3,
+  "shuffle": 2,
+  "addBus": 1
+ },
+ "seed": 2,
+ "goal": 3,
+ "status": "WIP",
+ "category": ""
+}

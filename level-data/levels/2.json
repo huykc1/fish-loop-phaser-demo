@@ -1,0 +1,109 @@
+{
+ "id": 2,
+ "name": "Đường gấp khúc",
+ "pipe": {
+  "points": [
+   [
+    100,
+    330
+   ],
+   [
+    980,
+    330
+   ],
+   [
+    980,
+    1000
+   ],
+   [
+    660,
+    1000
+   ],
+   [
+    660,
+    1600
+   ],
+   [
+    100,
+    1600
+   ]
+  ],
+  "cornerRadius": 110,
+  "inlet": {
+   "s": 0
+  },
+  "outlet": {
+   "s": 0.5
+  }
+ },
+ "pipeSpeed": 220,
+ "slotLength": 250,
+ "fishPerUnit": 5,
+ "pipeLimit": 5,
+ "buses": [
+  {
+   "x": 655,
+   "y": 520,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "green",
+    "blue",
+    "blue",
+    "green"
+   ],
+   "portS": null
+  },
+  {
+   "x": 655,
+   "y": 770,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "blue",
+    "green",
+    "red",
+    "red"
+   ],
+   "portS": null
+  },
+  {
+   "x": 265,
+   "y": 1200,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [
+    "red",
+    "green",
+    "blue",
+    "red"
+   ],
+   "portS": null
+  },
+  {
+   "x": 480,
+   "y": 1200,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [],
+   "portS": null
+  }
+ ],
+ "spareSlots": [
+  {
+   "x": 270,
+   "y": 675,
+   "rot": 270
+  }
+ ],
+ "boosters": {
+  "undo": 3,
+  "shuffle": 2,
+  "addBus": 1
+ },
+ "seed": 4,
+ "goal": 3,
+ "status": "WIP",
+ "category": "",
+ "busScale": 0.95
+}

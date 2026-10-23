@@ -1,0 +1,119 @@
+{
+ "id": 4,
+ "name": "Năm màu",
+ "pipe": {
+  "points": [
+   [
+    100,
+    330
+   ],
+   [
+    980,
+    330
+   ],
+   [
+    980,
+    1600
+   ],
+   [
+    100,
+    1600
+   ]
+  ],
+  "cornerRadius": 150,
+  "inlet": {
+   "s": 0
+  },
+  "outlet": {
+   "s": 0.6
+  }
+ },
+ "pipeSpeed": 220,
+ "slotLength": 95,
+ "fishPerUnit": 5,
+ "pipeLimit": 5,
+ "buses": [
+  {
+   "x": 540,
+   "y": 480,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "purple",
+    "red",
+    "purple",
+    "yellow"
+   ],
+   "portS": null
+  },
+  {
+   "x": 540,
+   "y": 675,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "red",
+    "red",
+    "green",
+    "blue"
+   ],
+   "portS": null
+  },
+  {
+   "x": 540,
+   "y": 870,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "yellow",
+    "green",
+    "green",
+    "red"
+   ],
+   "portS": null
+  },
+  {
+   "x": 540,
+   "y": 1060,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "blue",
+    "blue",
+    "purple",
+    "purple"
+   ],
+   "portS": null
+  },
+  {
+   "x": 540,
+   "y": 1255,
+   "rot": 0,
+   "capacity": 4,
+   "stack": [
+    "yellow",
+    "yellow",
+    "blue",
+    "green"
+   ],
+   "portS": null
+  }
+ ],
+ "spareSlots": [
+  {
+   "x": 545,
+   "y": 1450,
+   "rot": 0
+  }
+ ],
+ "boosters": {
+  "undo": 3,
+  "shuffle": 3,
+  "addBus": 1
+ },
+ "seed": 4885,
+ "goal": 5,
+ "status": "WIP",
+ "category": "",
+ "busScale": 0.87
+}

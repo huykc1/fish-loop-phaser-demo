@@ -1,0 +1,8 @@
+{
+  "title": "Fish Loop",
+  "tagline": "A colour-sorting fish puzzle on a looping pipe, built with Phaser 4",
+  "repo": "huykc1/fish-loop-phaser-demo",
+  "pagesUrl": "https://huykc1.github.io/fish-loop-phaser-demo",
+  "basePath": "/fish-loop-phaser-demo",
+  "devPort": 8080
+}

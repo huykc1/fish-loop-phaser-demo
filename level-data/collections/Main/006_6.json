@@ -1,0 +1,140 @@
+{
+ "id": 6,
+ "name": "Hai cổng",
+ "pipe": {
+  "points": [
+   [
+    120,
+    430
+   ],
+   [
+    960,
+    430
+   ],
+   [
+    960,
+    1500
+   ],
+   [
+    120,
+    1500
+   ]
+  ],
+  "cornerRadius": 150,
+  "open": true
+ },
+ "pipeSpeed": 220,
+ "slotLength": 90,
+ "fishPerUnit": 5,
+ "pipeLimit": 5,
+ "busScale": 0.7,
+ "buses": [
+  {
+   "x": 235,
+   "y": 700,
+   "rot": 270,
+   "capacity": 4,
+   "stack": [
+    "blue",
+    "green",
+    "blue",
+    "purple"
+   ],
+   "portS": null
+  },
+  {
+   "x": 420,
+   "y": 700,
+   "rot": 270,
+   "capacity": 4,
+   "stack": [
+    "orange",
+    "orange",
+    "yellow",
+    "blue"
+   ],
+   "portS": null
+  },
+  {
+   "x": 605,
+   "y": 700,
+   "rot": 270,
+   "capacity": 4,
+   "stack": [
+    "green",
+    "red",
+    "yellow",
+    "orange"
+   ],
+   "portS": null
+  },
+  {
+   "x": 790,
+   "y": 700,
+   "rot": 270,
+   "capacity": 4,
+   "stack": [
+    "pink",
+    "pink",
+    "red",
+    "purple"
+   ],
+   "portS": null
+  },
+  {
+   "x": 235,
+   "y": 1225,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [
+    "red",
+    "yellow",
+    "green",
+    "orange"
+   ],
+   "portS": null
+  },
+  {
+   "x": 420,
+   "y": 1225,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [
+    "purple",
+    "pink",
+    "green",
+    "blue"
+   ],
+   "portS": null
+  },
+  {
+   "x": 605,
+   "y": 1225,
+   "rot": 90,
+   "capacity": 4,
+   "stack": [
+    "pink",
+    "yellow",
+    "red",
+    "purple"
+   ],
+   "portS": null
+  }
+ ],
+ "spareSlots": [
+  {
+   "x": 790,
+   "y": 1225,
+   "rot": 90
+  }
+ ],
+ "boosters": {
+  "undo": 3,
+  "shuffle": 2,
+  "addBus": 1
+ },
+ "seed": 126704,
+ "status": "WIP",
+ "category": "",
+ "goal": 7
+}
