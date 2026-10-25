@@ -657,17 +657,26 @@ export class Board {
                     this.fishPool.push(img);
                 }
                 used++;
-                const s = head - (j + 0.5) * (sim.S / fpu) * 0.95 + Math.sin(t * 3 + j * 2 + i) * 4;
+                // đàn cá dãn ra: mỗi con trải trên ~2,6 ô quanh ô của nó (lẫn với cá màu khác ở ô bên cạnh),
+                // tự bơi lên / lùi chậm theo nhịp riêng và lượn ngang khắp lòng ống
+                const h1 = Math.abs(Math.sin(i * 12.9898 + j * 78.233) * 43758.5453) % 1;
+                const h2 = Math.abs(Math.sin(i * 39.346 + j * 11.135) * 24634.6345) % 1;
+                const spread = sim.S * 2.6;
+                const base = ((j + 0.5) / fpu - 0.5 + (h1 - 0.5) * 0.18) * spread;
+                const drift = Math.sin(t * (0.45 + h2 * 0.5) + h1 * 6.28) * sim.S * 0.28;
+                const s = head - sim.S * 0.5 + base + drift;
                 sim.path.at(s, p);
-                const lat = Math.sin(j * 2.3 + i * 1.3) * 24 + Math.sin(t * 2 + j + i) * 4;
+                const lat = (h2 - 0.5) * (PIPE_W - 40) + Math.sin(t * (0.6 + h1 * 0.6) + h2 * 6.28) * 10;
                 img.setTexture(`fish_${slot.color}`).setVisible(true);
                 img.setPosition(p.x - Math.sin(p.a) * lat, p.y + Math.cos(p.a) * lat);
+                img.setDepth(DEPTH.fish + (lat + 60) / 1000);
                 const ca = Math.cos(p.a), sa = Math.sin(p.a);
                 const face = ca < -0.15 ? -1 : 1;
                 img.rotation = Math.atan2(sa, Math.abs(ca) + 0.6) * 0.5 * face + Math.sin(t * 9 + j * 1.7 + i) * 0.07;
                 const g = this.gateFade(s);
                 img.setAlpha(g);
-                img.setScale(FISH_PIPE_SCALE * face * (0.4 + 0.6 * g), FISH_PIPE_SCALE * (0.4 + 0.6 * g) * (1 + Math.sin(t * 14 + j * 2 + i) * 0.05));
+                const fs = FISH_PIPE_SCALE * (0.88 + h1 * 0.2) * (0.4 + 0.6 * g);
+                img.setScale(fs * face, fs * (1 + Math.sin(t * 14 + j * 2 + i) * 0.05));
             }
         }
         for (let k = used; k < this.fishPool.length; k++) this.fishPool[k].setVisible(false);
