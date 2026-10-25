@@ -37,6 +37,10 @@ export class Board {
     private objs: Phaser.GameObjects.GameObject[] = [];
     private fishPool: Phaser.GameObjects.Image[] = [];
     private ripples: Mover[] = [];
+    private streaks: Mover[] = [];
+    private trail!: Phaser.GameObjects.Particles.ParticleEmitter;
+    private trailT = 0;
+    private shimmer?: Phaser.GameObjects.Image;
     private bubbles: Mover[] = [];
     private flyers: Flyer[] = [];
     private hiddenSlots = new Map<number, number>();
@@ -70,6 +74,24 @@ export class Board {
             img.setAlpha(0.18 + ((i * 13) % 7) / 40).setScale(0.7 + ((i * 7) % 5) / 8, 0.8);
             this.ripples.push({ img, s: (i / nr) * L, lat: (((i * 31) % 11) / 11 - 0.5) * 70, v: 1.15 + ((i * 17) % 5) / 10 });
         }
+        // vệt sáng dài chạy dọc 2 mép ống, nhanh hơn dòng nước
+        const ns = Math.round(L / 95);
+        for (let i = 0; i < ns; i++) {
+            const img = this.track(scene.add.image(0, 0, 'streak').setDepth(DEPTH.ripples + 0.5).setBlendMode(Phaser.BlendModes.ADD));
+            const edge = i % 2 ? 1 : -1;
+            img.setAlpha(0.25 + ((i * 7) % 5) / 14).setScale(0.6 + ((i * 11) % 6) / 7, 1);
+            this.streaks.push({ img, s: (i / ns) * L + ((i * 37) % 50), lat: edge * (PIPE_W / 2 - 16 - ((i * 13) % 3) * 6), v: 1.5 + ((i * 17) % 5) / 8 });
+        }
+        this.drawPipeShimmer();
+        this.trail = this.track(
+            scene.add.particles(0, 0, 'bubble', {
+                emitting: false,
+                speed: { min: 10, max: 40 },
+                lifespan: { min: 350, max: 700 },
+                scale: { start: 0.32, end: 0.05 },
+                alpha: { start: 0.85, end: 0 },
+            }),
+        ).setDepth(DEPTH.pipeBubbles);
         const nb = Math.round(L / 70);
         for (let i = 0; i < nb; i++) {
             const img = this.track(scene.add.image(0, 0, 'bubble').setDepth(DEPTH.pipeBubbles));
@@ -187,6 +209,32 @@ export class Board {
         g.fillStyle(0x16366f, 0.85);
         g.fillPoints(v2(this.offsetPts(PIPE_W / 2 + 40)), true);
         this.drawFloorWater();
+    }
+
+    /** vân sáng lấp lánh trong lòng ống: vân caustics của nền, chỉ hiện trong ống */
+    private drawPipeShimmer() {
+        const s = this.scene;
+        if (!s.textures.exists('caustics')) return;
+        if (s.textures.exists('pipeMask')) s.textures.remove('pipeMask');
+        const tex = s.textures.createCanvas('pipeMask', 1080, 1920);
+        if (!tex) return;
+        const c = tex.getContext();
+        const pts = this.pts();
+        c.strokeStyle = '#fff';
+        c.lineWidth = PIPE_W - 14;
+        c.lineJoin = 'round';
+        c.filter = 'blur(3px)';
+        c.beginPath();
+        pts.forEach((p, i) => (i ? c.lineTo(p.x, p.y) : c.moveTo(p.x, p.y)));
+        if (!this.sim.path.open) c.closePath();
+        c.stroke();
+        tex.refresh();
+        const img = this.track(
+            s.add.image(540, 960, 'caustics').setDisplaySize(1080, 1920).setBlendMode(Phaser.BlendModes.ADD).setTint(0x9fe2ff).setAlpha(0.38).setDepth(DEPTH.pipeWater + 0.5),
+        );
+        img.enableFilters();
+        img.filters!.internal.addMask('pipeMask');
+        this.shimmer = img;
     }
 
     /** sóng nước trên mặt bãi: vân sáng (caustics) của nền, chỉ hiện trong lòng bãi */
@@ -640,6 +688,24 @@ export class Board {
             const lat = r.lat + Math.sin(t * 1.5 + r.s * 0.01) * 5;
             r.img.setPosition(p.x - Math.sin(p.a) * lat, p.y + Math.cos(p.a) * lat).setRotation(p.a);
             r.img.setVisible(this.gateFade(r.s) > 0.5);
+        }
+        for (const r of this.streaks) {
+            if (moving) r.s += sim.speed * r.v * dt;
+            sim.path.at(r.s, p);
+            r.img.setPosition(p.x - Math.sin(p.a) * r.lat, p.y + Math.cos(p.a) * r.lat).setRotation(p.a);
+            r.img.setVisible(high && this.gateFade(r.s) > 0.5);
+        }
+        this.shimmer?.setVisible(high);
+        // vệt bọt sau mỗi đàn cá
+        this.trailT += dt;
+        if (high && moving && this.trailT > 0.12) {
+            this.trailT = 0;
+            for (let i = 0; i < sim.C; i++) {
+                if (!sim.slots[i].color || (this.hiddenSlots.get(i) ?? 0) > 0) continue;
+                sim.path.at(sim.slotPos(i, sim.renderOffset()) - sim.S * 0.95, p);
+                if (this.gateFade(sim.slotPos(i, sim.renderOffset()) - sim.S * 0.95) < 0.5) continue;
+                this.trail.explode(1, p.x + (Math.random() - 0.5) * 30, p.y + (Math.random() - 0.5) * 30);
+            }
         }
         for (const b of this.bubbles) {
             b.img.setVisible(high);

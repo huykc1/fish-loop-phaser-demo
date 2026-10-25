@@ -24,7 +24,7 @@
   ],
   "cornerRadius": 150
  },
- "pipeSpeed": 220,
+ "pipeSpeed": 265,
  "slotLength": 90,
  "fishPerUnit": 5,
  "pipeLimit": 5,
@@ -36,10 +36,10 @@
    "rot": 90,
    "capacity": 4,
    "stack": [
-    "white",
-    "orange",
-    "blue",
-    "blue"
+    "cyan",
+    "pink",
+    "green",
+    "green"
    ],
    "portS": null
   },
@@ -49,10 +49,10 @@
    "rot": 90,
    "capacity": 4,
    "stack": [
+    "orange",
     "brown",
-    "green",
-    "red",
-    "pink"
+    "brown",
+    "purple"
    ],
    "portS": null
   },
@@ -62,10 +62,10 @@
    "rot": 90,
    "capacity": 4,
    "stack": [
-    "blue",
-    "green",
-    "orange",
-    "orange"
+    "pink",
+    "red",
+    "red",
+    "red"
    ],
    "portS": null
   },
@@ -75,10 +75,10 @@
    "rot": 90,
    "capacity": 4,
    "stack": [
-    "yellow",
-    "cyan",
-    "yellow",
-    "green"
+    "purple",
+    "purple",
+    "blue",
+    "blue"
    ],
    "portS": null
   },
@@ -88,10 +88,10 @@
    "rot": 90,
    "capacity": 4,
    "stack": [
-    "pink",
-    "pink",
-    "pink",
-    "red"
+    "red",
+    "white",
+    "white",
+    "white"
    ],
    "portS": null
   },
@@ -101,10 +101,10 @@
    "rot": 180,
    "capacity": 4,
    "stack": [
-    "brown",
-    "white",
-    "purple",
-    "white"
+    "yellow",
+    "yellow",
+    "orange",
+    "orange"
    ],
    "portS": null
   },
@@ -114,10 +114,10 @@
    "rot": 0,
    "capacity": 4,
    "stack": [
+    "blue",
+    "blue",
     "yellow",
-    "red",
-    "purple",
-    "purple"
+    "yellow"
    ],
    "portS": null
   },
@@ -127,9 +127,9 @@
    "rot": 270,
    "capacity": 4,
    "stack": [
-    "cyan",
-    "cyan",
-    "white",
+    "brown",
+    "brown",
+    "orange",
     "purple"
    ],
    "portS": null
@@ -140,10 +140,10 @@
    "rot": 270,
    "capacity": 4,
    "stack": [
-    "yellow",
-    "cyan",
-    "brown",
-    "blue"
+    "green",
+    "green",
+    "pink",
+    "pink"
    ],
    "portS": null
   },
@@ -153,10 +153,10 @@
    "rot": 270,
    "capacity": 4,
    "stack": [
-    "orange",
-    "brown",
-    "red",
-    "green"
+    "white",
+    "cyan",
+    "cyan",
+    "cyan"
    ],
    "portS": null
   },
@@ -189,6 +189,6 @@
   "shuffle": 2,
   "addBus": 1
  },
- "seed": 2932421,
+ "seed": 44075,
  "goal": 10
 }

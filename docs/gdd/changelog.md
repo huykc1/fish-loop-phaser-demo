@@ -10,6 +10,7 @@ Every published version stays playable at its own URL. The [landing page](https:
 - Bể nước vẽ lại theo từng màu (khối nước phát sáng, viền kính ánh màu).
 - Ống hở có 2 cổng (`pipe.open`), cỡ xe theo level (`busScale`), xe hoàn thành đóng nắp + ✓. Level 6 "Hai cổng".
 - Bỏ mũi tên làn ở 2 đầu xe ngang.
+- Nước chảy nhanh hơn ~20% (pipeSpeed 220 → 265, level 5: 240 → 290; level mới mặc định 265) và đẹp hơn: vân sáng lấp lánh trong lòng ống, vệt sáng chạy dọc 2 mép ống, vệt bọt sau mỗi đàn cá. Level 9 và 10 rải lại màu để solver vẫn giải nhanh; cả 10 level giải được.
 - Màn thắng / thua làm lại (ruy băng, sao theo số booster đã dùng, tia nắng, cá vui / buồn, thẻ booster cứu màn).
 - Bộ marketing: logo, icon 1024, end card động (`?promo=endcard`) và ảnh tĩnh trong `art/marketing/` (xem Guide → Bộ marketing).
 - Editor: mở lần đầu tự nạp đủ level của game (trước đây phải chọn nơi lưu, và chỉ có 6 level); folder trống cũng được nạp sẵn; nút ★ thêm level của game còn thiếu.

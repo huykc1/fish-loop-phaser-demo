@@ -158,7 +158,7 @@ export function newLevel(id: number): LevelDef {
     status: 'WIP',
     category: '',
     pipe: { ...structuredClone(PIPE_PRESETS['Chữ nhật']), inlet: { s: 0 }, outlet: { s: 0.6 } },
-    pipeSpeed: 220,
+    pipeSpeed: 265,
     slotLength: 95,
     fishPerUnit: 5,
     pipeLimit: 5,

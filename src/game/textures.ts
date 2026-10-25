@@ -251,6 +251,18 @@ export function buildTextures(scene: Phaser.Scene) {
         g.fill();
     });
 
+    // vệt sáng dài, mảnh (nước chảy xiết dọc mép ống)
+    make(scene, 'streak', 160, 8, (g, w, h) => {
+        const gr = g.createLinearGradient(0, 0, w, 0);
+        gr.addColorStop(0, 'rgba(255,255,255,0)');
+        gr.addColorStop(0.7, 'rgba(255,255,255,0.95)');
+        gr.addColorStop(1, 'rgba(255,255,255,0)');
+        g.fillStyle = gr;
+        g.beginPath();
+        g.ellipse(w / 2, h / 2, w / 2, h / 2 - 1, 0, 0, Math.PI * 2);
+        g.fill();
+    });
+
     make(scene, 'drop', 20, 26, (g) => {
         const gr = g.createLinearGradient(0, 0, 20, 26);
         gr.addColorStop(0, 'rgba(255,255,255,1)');
