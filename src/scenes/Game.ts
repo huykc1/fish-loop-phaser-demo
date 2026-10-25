@@ -28,7 +28,7 @@ export class Game extends Phaser.Scene {
     private popup: Popup | null = null;
     private confetti!: Phaser.GameObjects.Particles.ParticleEmitter;
     private quality: 'high' | 'low' = 'high';
-    private perf = { acc: 0, n: 0, win: 0 };
+    private perf = { samples: [] as number[], win: 0, good: 0 };
     /** đang tự chơi theo lời giải (bàn tay) */
     private demo: SolverDemo | null = null;
     private demoBanner: Phaser.GameObjects.Text | null = null;
@@ -349,16 +349,28 @@ export class Game extends Phaser.Scene {
     }
 
     /** tự hạ chất lượng khi máy yếu */
+    /**
+     * Tự chỉnh đồ hoạ (chế độ Tự động): đo trung vị thời gian khung hình trong cửa sổ 4 giây.
+     * Bỏ qua khung giật đơn lẻ (> 100 ms: solver, chuyển tab…). Chậm kéo dài (trung vị > 26 ms) → Tiết kiệm;
+     * đang Tiết kiệm mà mượt lại (trung vị < 18 ms) 2 cửa sổ liên tiếp → bật lại đồ hoạ cao.
+     */
     private perfSample(ms: number) {
-        if (this.save.quality !== 'auto' || this.quality === 'low') return;
+        if (this.save.quality !== 'auto') return;
         const p = this.perf;
-        p.acc += ms;
-        p.n++;
+        if (ms > 100) return;
+        p.samples.push(ms);
         p.win += ms;
-        if (p.win > 3000) {
-            const avg = p.acc / p.n;
-            p.acc = p.n = p.win = 0;
-            if (avg > 24) this.setQuality('low');
+        if (p.win < 4000) return;
+        const sorted = [...p.samples].sort((a, b) => a - b);
+        const med = sorted[Math.floor(sorted.length / 2)];
+        p.samples = [];
+        p.win = 0;
+        if (this.quality === 'high' && med > 26) {
+            this.setQuality('low');
+            p.good = 0;
+        } else if (this.quality === 'low') {
+            p.good = med < 18 ? p.good + 1 : 0;
+            if (p.good >= 2) this.setQuality('high');
         }
     }
 

@@ -71,16 +71,16 @@ export class Board {
         const nr = Math.round(L / 110);
         for (let i = 0; i < nr; i++) {
             const img = this.track(scene.add.image(0, 0, 'ripple').setDepth(DEPTH.ripples).setBlendMode(Phaser.BlendModes.ADD));
-            img.setAlpha(0.18 + ((i * 13) % 7) / 40).setScale(0.7 + ((i * 7) % 5) / 8, 0.8);
+            img.setAlpha(0.14 + ((i * 13) % 7) / 50).setScale(0.45 + ((i * 7) % 5) / 12, 0.7);
             this.ripples.push({ img, s: (i / nr) * L, lat: (((i * 31) % 11) / 11 - 0.5) * 70, v: 1.15 + ((i * 17) % 5) / 10 });
         }
-        // vệt sáng dài chạy dọc 2 mép ống, nhanh hơn dòng nước
-        const ns = Math.round(L / 95);
+        // đốm sáng mềm trôi theo dòng nước (tròn, không xoay nên qua góc vẫn mượt)
+        const ns = Math.round(L / 34);
         for (let i = 0; i < ns; i++) {
-            const img = this.track(scene.add.image(0, 0, 'streak').setDepth(DEPTH.ripples + 0.5).setBlendMode(Phaser.BlendModes.ADD));
-            const edge = i % 2 ? 1 : -1;
-            img.setAlpha(0.25 + ((i * 7) % 5) / 14).setScale(0.6 + ((i * 11) % 6) / 7, 1);
-            this.streaks.push({ img, s: (i / ns) * L + ((i * 37) % 50), lat: edge * (PIPE_W / 2 - 16 - ((i * 13) % 3) * 6), v: 1.5 + ((i * 17) % 5) / 8 });
+            const img = this.track(scene.add.image(0, 0, 'glow').setDepth(DEPTH.ripples + 0.5).setBlendMode(Phaser.BlendModes.ADD).setTint(0xe6fbff));
+            const sc = 0.18 + ((i * 7) % 6) / 30;
+            img.setScale(sc * 1.6, sc);
+            this.streaks.push({ img, s: ((i * 0.618) % 1) * L, lat: (((i * 37) % 17) / 17 - 0.5) * (PIPE_W - 30), v: 1.05 + ((i * 13) % 7) / 14 });
         }
         this.drawPipeShimmer();
         this.trail = this.track(
@@ -689,12 +689,16 @@ export class Board {
             r.img.setPosition(p.x - Math.sin(p.a) * lat, p.y + Math.cos(p.a) * lat).setRotation(p.a);
             r.img.setVisible(this.gateFade(r.s) > 0.5);
         }
-        for (const r of this.streaks) {
+        this.streaks.forEach((r, i) => {
             if (moving) r.s += sim.speed * r.v * dt;
             sim.path.at(r.s, p);
-            r.img.setPosition(p.x - Math.sin(p.a) * r.lat, p.y + Math.cos(p.a) * r.lat).setRotation(p.a);
-            r.img.setVisible(high && this.gateFade(r.s) > 0.5);
-        }
+            const lat = r.lat + Math.sin(t * 1.7 + i * 2.1) * 9;
+            r.img.setPosition(p.x - Math.sin(p.a) * lat, p.y + Math.cos(p.a) * lat);
+            // kéo dài theo hướng dòng chảy một chút, mờ tỏ chậm
+            r.img.rotation = p.a;
+            r.img.setAlpha((0.12 + 0.16 * (0.5 + 0.5 * Math.sin(t * 2.3 + i * 1.3))) * this.gateFade(r.s));
+            r.img.setVisible(high);
+        });
         this.shimmer?.setVisible(high);
         // vệt bọt sau mỗi đàn cá
         this.trailT += dt;
