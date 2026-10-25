@@ -10,6 +10,8 @@ Every published version stays playable at its own URL. The [landing page](https:
 - Bể nước vẽ lại theo từng màu (khối nước phát sáng, viền kính ánh màu).
 - Ống hở có 2 cổng (`pipe.open`), cỡ xe theo level (`busScale`), xe hoàn thành đóng nắp + ✓. Level 6 "Hai cổng".
 - Bỏ mũi tên làn ở 2 đầu xe ngang.
+- Màn thắng / thua làm lại (ruy băng, sao theo số booster đã dùng, tia nắng, cá vui / buồn, thẻ booster cứu màn).
+- Bộ marketing: logo, icon 1024, end card động (`?promo=endcard`) và ảnh tĩnh trong `art/marketing/` (xem Guide → Bộ marketing).
 - Editor: mở lần đầu tự nạp đủ level của game (trước đây phải chọn nơi lưu, và chỉ có 6 level); folder trống cũng được nạp sẵn; nút ★ thêm level của game còn thiếu.
 - Kiểm tra mới: xe / chỗ dự phòng không được đè lên ống (editor báo lỗi, chỗ dự phòng tự động cũng tránh, có test). Sửa level 6 (2 hàng xe lấn vào ống), level 2 (xe dọc sát ống trái, chỗ dự phòng sát ống trên; cỡ xe 0,95), level 9 (2 xe trong lòng ống chạm nhau).
 - Thêm level 7–10 theo 4 bố cục mẫu (`art/reference/layout-ref-7..10.jpg`): Chữ S (ống S hở, 3 hàng xe), Móc câu (ống ⊃ hở, xe trên / trong / dưới), Hai bờ (vòng ngang, 2 xe trong + xe 2 bờ), Ô vuông (vòng vuông, 3 xe trong + xe trên / dưới). 8–10 màu, màu rải theo cặp; solver giải được tất cả.

@@ -11,6 +11,7 @@ import { LEVELS } from '../game/levels';
 import { loadSave, writeSave, PLAYTEST_KEY } from '../game/storage';
 import { sfx } from '../game/audio';
 import { button, label, Popup } from '../game/ui';
+import { showLose, showWin } from '../game/ResultScreens';
 
 const params = new URLSearchParams(location.search);
 const isPlaytest = params.has('playtest');
@@ -130,6 +131,7 @@ export class Game extends Phaser.Scene {
             writeSave(this.save);
         }
         this.sim = new Sim(this.levelDef);
+        this.boostersUsed = 0;
         this.board?.destroy();
         this.picking = false;
         this.board = new Board(this, this.sim, (id) => {
@@ -164,6 +166,8 @@ export class Game extends Phaser.Scene {
     // ---------------- Booster ----------------
     /** đang chờ người chơi chọn xe để Shuffle */
     private picking = false;
+    /** số booster đã dùng trong màn (tính sao khi thắng) */
+    private boostersUsed = 0;
 
     private useBooster(kind: 'undo' | 'shuffle' | 'addBus') {
         sfx.unlock();
@@ -182,6 +186,7 @@ export class Game extends Phaser.Scene {
         const ok = kind === 'undo' ? s.useUndo() : s.useAddBus();
         if (ok) {
             sfx.play('booster');
+            this.boostersUsed++;
             this.closePopup();
         } else {
             sfx.play('deny');
@@ -201,6 +206,7 @@ export class Game extends Phaser.Scene {
     private pickBus(id: number) {
         if (this.sim.useShuffle(id)) {
             sfx.play('booster');
+            this.boostersUsed++;
             this.setPicking(false);
         } else {
             sfx.play('deny');
@@ -237,20 +243,19 @@ export class Game extends Phaser.Scene {
         const last = this.levelIndex >= LEVELS.length - 1;
         this.time.delayedCall(900, () => {
             if (this.sim.status !== 'won') return;
-            const p = (this.popup = new Popup(this, 760, 640));
-            const title = label(this, 0, -200, 'Tuyệt vời!', 92, '#ffe066');
-            const stars = [-150, 0, 150].map((x, i) => {
-                const st = this.add.image(x, -60, 'star').setScale(0).setTint(0xffd23a);
-                this.tweens.add({ targets: st, scale: i === 1 ? 2.3 : 1.8, angle: 360, delay: 300 + i * 160, duration: 500, ease: 'Back.easeOut' });
-                return st;
-            });
-            const info = label(this, 0, 70, `${this.sim.completed} xe · ${this.sim.moves} lượt`, 44);
-            const again = button(this, -170, 210, 300, 120, 'Chơi lại', () => this.startLevel(this.levelIndex), 'grey');
-            const items: Phaser.GameObjects.GameObject[] = [title, ...stars, info, again];
-            if (!isPlaytest) items.push(button(this, 170, 210, 300, 120, last ? 'Về màn 1' : 'Màn tiếp', () => this.startLevel(last ? 0 : this.levelIndex + 1)));
-            else again.x = 0;
-            p.add(items);
-            this.tweens.add({ targets: title, scale: { from: 0.9, to: 1.05 }, duration: 700, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+            this.popup = showWin(
+                this,
+                {
+                    level: this.levelDef.id,
+                    stars: Math.max(1, 3 - this.boostersUsed),
+                    buses: this.sim.completed,
+                    moves: this.sim.moves,
+                    nextLabel: isPlaytest ? null : last ? 'Về màn 1' : 'Màn tiếp',
+                    onNext: () => this.startLevel(last ? 0 : this.levelIndex + 1),
+                    onRetry: () => this.startLevel(this.levelIndex),
+                },
+                () => sfx.play('complete'),
+            );
         });
     }
 
@@ -260,20 +265,15 @@ export class Game extends Phaser.Scene {
         this.time.delayedCall(600, () => {
             if (this.sim.status !== 'lost' || this.popup) return;
             const s = this.sim;
-            const p = (this.popup = new Popup(this, 820, 700));
-            const items: Phaser.GameObjects.GameObject[] = [
-                label(this, 0, -250, 'Ống bị kẹt!', 84, '#ff8a7a'),
-                label(this, 0, -150, 'Không còn cá nào vào được xe', 38),
-            ];
-            const opts: [string, boolean, () => void][] = [
-                [`Trả về (${s.boosters.undo})`, s.canUndo(), () => this.useBooster('undo')],
-                [`Xáo 1 xe (${s.boosters.shuffle})`, s.canShuffle(), () => this.useBooster('shuffle')],
-                [`Thêm xe (${s.boosters.addBus})`, s.canAddBus(), () => this.useBooster('addBus')],
-            ];
-            const avail = opts.filter((o) => o[1]);
-            avail.forEach(([t, , fn], i) => items.push(button(this, 0, -40 + i * 120, 520, 104, t, fn)));
-            items.push(button(this, 0, 250, 420, 110, 'Chơi lại', () => this.startLevel(this.levelIndex), 'grey'));
-            p.add(items);
+            this.popup = showLose(
+                this,
+                [
+                    { key: 'btn_undo', name: 'Trả về', count: s.boosters.undo, enabled: s.canUndo(), use: () => this.useBooster('undo') },
+                    { key: 'btn_shuffle', name: 'Xáo xe', count: s.boosters.shuffle, enabled: s.canShuffle(), use: () => this.useBooster('shuffle') },
+                    { key: 'btn_bus', name: 'Thêm xe', count: s.boosters.addBus, enabled: s.canAddBus(), use: () => this.useBooster('addBus') },
+                ],
+                () => this.startLevel(this.levelIndex),
+            );
         });
     }
 

@@ -67,6 +67,7 @@ export default defineConfig({
                         { text: 'Deployment', link: '/guide/deployment' },
                         { text: 'Level editor', link: '/guide/editor' },
                         { text: 'Tạo asset bằng ChatGPT', link: '/guide/assets' },
+                        { text: 'Bộ marketing', link: '/guide/marketing' },
                         { text: 'Game Design Document →', link: '/gdd/' }
                     ]
                 }

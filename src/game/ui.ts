@@ -44,19 +44,25 @@ export class Popup {
     readonly root: Phaser.GameObjects.Container;
     private dim: Phaser.GameObjects.Image;
 
-    constructor(private scene: Phaser.Scene, w: number, h: number) {
-        this.dim = scene.add.image(540, 960, 'pixel').setDisplaySize(1080, 1920).setTint(0x050a30).setAlpha(0).setDepth(DEPTH.popup);
+    constructor(private scene: Phaser.Scene, w: number, h: number, private dimAlpha = 0.6, dimColor = 0x050a30) {
+        this.dim = scene.add.image(540, 960, 'pixel').setDisplaySize(1080, 1920).setTint(dimColor).setAlpha(0).setDepth(DEPTH.popup);
         this.dim.setInteractive();
         this.root = scene.add.container(540, 900).setDepth(DEPTH.popup + 1);
         const panel = scene.add.nineslice(0, 0, 'panel', undefined, w, h, 70, 70, 70, 80);
         this.root.add(panel);
         this.root.setScale(0.6).setAlpha(0);
-        scene.tweens.add({ targets: this.dim, alpha: 0.6, duration: 220 });
+        scene.tweens.add({ targets: this.dim, alpha: this.dimAlpha, duration: 220 });
         scene.tweens.add({ targets: this.root, scale: 1, alpha: 1, duration: 420, ease: 'Back.easeOut', easeParams: [1.8] });
     }
 
     add(o: Phaser.GameObjects.GameObject | Phaser.GameObjects.GameObject[]) {
         this.root.add(o);
+        return this;
+    }
+
+    /** thêm phía sau khung (tia nắng, viền tối…) */
+    under(o: Phaser.GameObjects.GameObject) {
+        this.root.addAt(o, 0);
         return this;
     }
 
@@ -69,6 +75,7 @@ export class Popup {
             duration: 180,
             ease: 'Quad.easeIn',
             onComplete: () => {
+                this.scene.tweens.killTweensOf(this.root.list);
                 this.dim.destroy();
                 this.root.destroy();
                 then?.();

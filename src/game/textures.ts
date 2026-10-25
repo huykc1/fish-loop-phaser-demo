@@ -414,6 +414,125 @@ export function buildTextures(scene: Phaser.Scene) {
         g.fill();
     });
 
+    // ---- màn thắng / thua / end card ----
+    // tia nắng xoay sau bảng kết quả
+    make(scene, 'rays', 1024, 1024, (g, w, h) => {
+        const n = 18;
+        const rad = g.createRadialGradient(w / 2, h / 2, 40, w / 2, h / 2, w / 2);
+        rad.addColorStop(0, 'rgba(255,255,255,0.95)');
+        rad.addColorStop(1, 'rgba(255,255,255,0)');
+        g.fillStyle = rad;
+        for (let i = 0; i < n; i++) {
+            const a0 = (i / n) * Math.PI * 2, a1 = a0 + (Math.PI / n) * 0.9;
+            g.beginPath();
+            g.moveTo(w / 2, h / 2);
+            g.arc(w / 2, h / 2, w / 2, a0, a1);
+            g.closePath();
+            g.fill();
+        }
+    });
+    // dải ruy băng (vàng / đỏ) có đuôi gấp; chữ vẽ đè bằng Text
+    const ribbon = (key: string, top: string, mid: string, bot: string, tail: string, fold: string) =>
+        make(scene, key, 900, 230, (g, w) => {
+            const cx = w / 2, by = 40, bh = 140, bw = 700, tw = 130;
+            // đuôi 2 bên
+            for (const s of [-1, 1]) {
+                const x0 = cx + s * (bw / 2 - 30);
+                const x1 = cx + s * (bw / 2 + tw);
+                g.fillStyle = tail;
+                g.beginPath();
+                g.moveTo(x0, by + 40);
+                g.lineTo(x1, by + 40);
+                g.lineTo(x1 - s * 45, by + 40 + (bh - 20) / 2);
+                g.lineTo(x1, by + bh + 20);
+                g.lineTo(x0, by + bh + 20);
+                g.closePath();
+                g.fill();
+                g.fillStyle = fold;
+                g.beginPath();
+                g.moveTo(cx + s * (bw / 2 - 30), by + bh);
+                g.lineTo(cx + s * (bw / 2 - 30), by + bh + 20);
+                g.lineTo(cx + s * (bw / 2 - 70), by + bh);
+                g.closePath();
+                g.fill();
+            }
+            // thân băng hơi cong
+            g.shadowColor = 'rgba(20,10,60,0.45)';
+            g.shadowBlur = 14;
+            g.shadowOffsetY = 8;
+            const gr = g.createLinearGradient(0, by, 0, by + bh);
+            gr.addColorStop(0, top);
+            gr.addColorStop(0.5, mid);
+            gr.addColorStop(1, bot);
+            g.fillStyle = gr;
+            g.beginPath();
+            g.moveTo(cx - bw / 2, by + 10);
+            g.quadraticCurveTo(cx, by - 18, cx + bw / 2, by + 10);
+            g.lineTo(cx + bw / 2, by + bh);
+            g.quadraticCurveTo(cx, by + bh - 28, cx - bw / 2, by + bh);
+            g.closePath();
+            g.fill();
+            g.shadowColor = 'transparent';
+            g.strokeStyle = 'rgba(255,255,255,0.55)';
+            g.lineWidth = 5;
+            g.beginPath();
+            g.moveTo(cx - bw / 2 + 14, by + 22);
+            g.quadraticCurveTo(cx, by - 4, cx + bw / 2 - 14, by + 22);
+            g.stroke();
+        });
+    ribbon('ribbonGold', '#ffe27a', '#ffb92e', '#e07a12', '#c4620c', '#7a3a06');
+    ribbon('ribbonRed', '#ff8f7a', '#f0473a', '#b31d28', '#9a1622', '#5a0a12');
+    // ô sao trống
+    make(scene, 'starSlot', 160, 160, (g, w, h) => {
+        g.fillStyle = 'rgba(10,15,70,0.75)';
+        g.strokeStyle = 'rgba(255,255,255,0.25)';
+        g.lineWidth = 5;
+        g.beginPath();
+        for (let i = 0; i < 10; i++) {
+            const r = i % 2 ? 32 : 70;
+            const a = -Math.PI / 2 + (i * Math.PI) / 5;
+            g.lineTo(w / 2 + Math.cos(a) * r, h / 2 + 4 + Math.sin(a) * r);
+        }
+        g.closePath();
+        g.fill();
+        g.stroke();
+    });
+    // sao vàng bóng
+    make(scene, 'starGold', 160, 160, (g, w, h) => {
+        g.shadowColor = 'rgba(120,60,0,0.5)';
+        g.shadowBlur = 10;
+        g.shadowOffsetY = 6;
+        const gr = g.createLinearGradient(0, 10, 0, h - 10);
+        gr.addColorStop(0, '#fff3a0');
+        gr.addColorStop(0.45, '#ffd23a');
+        gr.addColorStop(1, '#f08a12');
+        g.fillStyle = gr;
+        g.beginPath();
+        for (let i = 0; i < 10; i++) {
+            const r = i % 2 ? 32 : 70;
+            const a = -Math.PI / 2 + (i * Math.PI) / 5;
+            g.lineTo(w / 2 + Math.cos(a) * r, h / 2 + 4 + Math.sin(a) * r);
+        }
+        g.closePath();
+        g.fill();
+        g.shadowColor = 'transparent';
+        g.lineWidth = 6;
+        g.strokeStyle = '#fff6c8';
+        g.stroke();
+        g.fillStyle = 'rgba(255,255,255,0.6)';
+        g.beginPath();
+        g.ellipse(w / 2 - 14, h / 2 - 22, 14, 7, -0.5, 0, Math.PI * 2);
+        g.fill();
+    });
+    // viền tối 4 góc (màn thua)
+    make(scene, 'vignette', 540, 960, (g, w, h) => {
+        const rad = g.createRadialGradient(w / 2, h / 2, h * 0.25, w / 2, h / 2, h * 0.62);
+        rad.addColorStop(0, 'rgba(0,0,0,0)');
+        rad.addColorStop(1, 'rgba(0,0,0,1)');
+        g.fillStyle = rad;
+        g.fillRect(0, 0, w, h);
+    });
+
     // khớp nối trên ống (vòng kính)
     make(scene, 'joint', 40, 150, (g, w, h) => {
         const gr = g.createLinearGradient(0, 0, w, 0);

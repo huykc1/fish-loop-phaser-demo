@@ -49,6 +49,7 @@ export class Boot extends Phaser.Scene {
         } catch {
             /* dùng font dự phòng */
         }
-        this.scene.start('Game');
+        // ?promo=endcard|logo|icon mở cảnh quảng cáo thay cho màn chơi
+        this.scene.start(new URLSearchParams(location.search).has('promo') ? 'Promo' : 'Game');
     }
 }
