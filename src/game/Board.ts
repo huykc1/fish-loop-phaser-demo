@@ -480,6 +480,7 @@ export class Board {
                     break;
                 }
                 case 'insert': {
+                    this.lag[e.slot] = 0;
                     const b = sim.buses[e.bus];
                     this.hiddenSlots.set(e.slot, (this.hiddenSlots.get(e.slot) ?? 0) + 1);
                     const tail = busTail(b.x, b.y, b.rot, b.capacity, this.scale);
@@ -516,6 +517,19 @@ export class Board {
                 case 'complete': {
                     // chờ cá bay vào bể cuối rồi mới chúc mừng
                     this.pendingComplete.add(e.bus);
+                    break;
+                }
+                case 'shift': {
+                    // nấc lùi 1 ô: giữ nguyên vị trí hiển thị rồi trôi mượt về chỗ mới
+                    const C = sim.C;
+                    for (let m = e.to; m !== e.from; m = (m + 1) % C) {
+                        this.lag[m] = (this.lag[(m + 1) % C] ?? 0) + sim.S;
+                        const h = this.hiddenSlots.get((m + 1) % C);
+                        if (h) this.hiddenSlots.set(m, h);
+                        else this.hiddenSlots.delete(m);
+                    }
+                    this.lag[e.from] = 0;
+                    this.hiddenSlots.delete(e.from);
                     break;
                 }
                 case 'pipeFull':
@@ -649,7 +663,10 @@ export class Board {
         for (let i = 0; i < sim.C; i++) {
             const slot = sim.slots[i];
             if (!slot.color || (this.hiddenSlots.get(i) ?? 0) > 0) continue;
-            const head = sim.slotPos(i, off);
+            const lag = this.lag[i] ?? 0;
+            if (lag > 0.5) this.lag[i] = lag * Math.exp(-dt * 7);
+            else this.lag[i] = 0;
+            const head = sim.slotPos(i, off) + (this.lag[i] ?? 0);
             for (let j = 0; j < fpu; j++) {
                 let img = this.fishPool[used];
                 if (!img) {
@@ -766,6 +783,8 @@ export class Board {
         return Math.min(1, Math.min(w, path.length - w) / 46);
     }
     private prevHead: number[] = [];
+    /** độ lệch hiển thị (px) của từng ô sau khi đàn cá lùi nhường chỗ, giảm dần về 0 */
+    private lag: number[] = [];
 
     /** màu chủ đạo của level (dùng cho pháo giấy) */
     colors(): number[] {

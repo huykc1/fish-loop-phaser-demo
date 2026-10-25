@@ -92,6 +92,26 @@ describe('core', () => {
     expect(s.buses[2].stack.length + s.buses[0].stack.length).toBe(1);
   });
 
+  it('cá chen vào ngay, đàn phía sau lùi nhường chỗ', () => {
+    const lv = base();
+    lv.pipeLimit = 99;
+    lv.buses[0].stack = ['red', 'red', 'red', 'blue'];
+    const s = new Sim(lv);
+    // lấp kín toàn bộ ống trừ 3 ô ở xa cổng xe 0
+    const port = s.buses[0].portS;
+    s.slots.forEach((sl, i) => {
+      const y = s.path.wrap(port - s.slotPos(i, 0));
+      sl.color = y < s.L * 0.6 ? 'green' : null;
+    });
+    const before = s.slots.filter((x) => x.color === 'green').length;
+    expect(s.tap(0)).toBe(true);
+    // 1 nấc đi tới cổng mất ~1 ô; không cần chờ ô trống đi qua
+    for (let k = 0; k < Math.ceil((s.S / s.speed) / FIXED_DT) + 2; k++) s.step(FIXED_DT);
+    expect(s.buses[0].pending.length).toBe(0);
+    expect(s.slots.filter((x) => x.color === 'blue').length).toBe(1);
+    expect(s.slots.filter((x) => x.color === 'green').length).toBe(before); // không mất nấc nào
+  });
+
   it('giới hạn N nấc trên ống', () => {
     const lv = base();
     lv.pipeLimit = 2;

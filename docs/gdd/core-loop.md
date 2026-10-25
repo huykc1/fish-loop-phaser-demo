@@ -22,7 +22,7 @@
 
 Bộ đếm `x/N` trên HUD: `x` = số nấc đang chạy trên ống. Nấc rơi xuống ống → `x` tăng 1; nấc vào xe → `x` giảm 1. Khi `x = N` số chuyển màu đỏ nhạt.
 5. `n` nấc rời xe ngay (xe không còn chứa chúng) và vào **hàng chờ của cổng** xe đó.
-6. Mỗi khi một **ô trống** đi qua cổng, nấc đầu hàng chờ nhảy vào ô đó. Ô ghi nhớ `source = xe nguồn`, `traveled = 0`.
+6. Mỗi khi một ô đi qua cổng, nấc đầu hàng chờ **chen vào ngay** ô đó (không phải chờ ô trống). Nếu ô đang có cá thì các nấc từ ô đó ngược về phía sau (chưa tới cổng) **lùi mỗi nấc 1 ô** tới ô trống gần nhất để nhường chỗ (luôn có ô trống vì bước 3 đã trừ hàng chờ). Trên màn hình, đàn phía sau chậm lại rồi giãn ra mượt. Ô mới ghi nhớ `source = xe nguồn`, `traveled = 0`. Tốc độ xả ≈ `pipeSpeed / slotLength` nấc mỗi giây.
 7. Có thể tap tiếp khi hàng chờ chưa xả hết. Cụm tiếp theo xếp sau trong hàng chờ.
 
 ## 2.3 Cá vào xe (tự động)
@@ -31,7 +31,7 @@ Khi một ô có cá màu `c` đi qua cổng của xe `B`, cá vào `B` nếu **
 
 - `B` chưa hoàn thành và còn chỗ trống (`stack.length < capacity`).
 - `B` rỗng **hoặc** nấc ở đuôi `B` có màu `c`.
-- `B` không có hàng chờ xả.
+- `B` không có hàng chờ xả (xe đang xả thì cổng ưu tiên cho cá ra).
 - Không phải trường hợp `source = B` và `traveled < L` (cá **không quay lại xe nguồn** khi chưa chạy hết 1 vòng).
 - **Ưu tiên xe cùng màu:** nếu `B` rỗng mà đang có xe khác chưa ✓, còn chỗ, không rỗng và nấc ở đuôi màu `c`, thì cá **không vào `B`** (đi ngang xe trống cũng bỏ qua) mà chạy tiếp tìm xe đó. Khi các xe như vậy đã đầy, phần còn dư mới được vào xe trống (thường sau thêm 1 vòng). Tránh việc 2 xe cùng có nấc màu `c` cứ chuyền qua lại cho nhau.
 

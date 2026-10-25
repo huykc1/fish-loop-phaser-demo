@@ -10,6 +10,7 @@ Every published version stays playable at its own URL. The [landing page](https:
 - Bể nước vẽ lại theo từng màu (khối nước phát sáng, viền kính ánh màu).
 - Ống hở có 2 cổng (`pipe.open`), cỡ xe theo level (`busScale`), xe hoàn thành đóng nắp + ✓. Level 6 "Hai cổng".
 - Bỏ mũi tên làn ở 2 đầu xe ngang.
+- Luật xả cá: cá trong xe **chen vào ống ngay** tại cổng, đàn phía sau lùi 1 ô nhường chỗ (trước đây phải chờ ô trống đi qua). Chưa chạy lại solver cho 10 level theo luật mới (theo yêu cầu); `goal` trong file level có thể chưa khớp.
 - Cá trong ống bơi dãn ra: mỗi đàn trải dài ~2,6 ô và lẫn với cá màu khác ở ô bên cạnh, mỗi con tự bơi lên / lùi chậm và lượn ngang khắp lòng ống, cỡ hơi khác nhau (chỉ đổi hiển thị, luật giữ nguyên).
 - Sửa: sóng nước nền (và các hiệu ứng khác) không còn tự tắt sau một lúc. Nguyên nhân: chế độ đồ hoạ Tự động coi khung hình giật (solver, chuyển tab) là máy yếu và chuyển hẳn sang Tiết kiệm. Giờ bỏ qua khung giật, đo theo trung vị, và tự bật lại khi mượt.
 - Nước chảy nhanh hơn ~20% (pipeSpeed 220 → 265, level 5: 240 → 290; level mới mặc định 265) và đẹp hơn: vân sáng lấp lánh trong lòng ống, đốm sáng mềm trôi theo dòng nước, vệt bọt sau mỗi đàn cá. Level 9 và 10 rải lại màu để solver vẫn giải nhanh; cả 10 level giải được.

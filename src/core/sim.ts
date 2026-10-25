@@ -212,17 +212,39 @@ export class Sim {
       const i = Math.floor(y / this.S) % this.C;
       if (y - i * this.S >= dv) continue;
       const slot = this.slots[i];
-      if (slot.color) this.tryAbsorb(b, slot, i);
-      else if (b.pending.length) {
+      if (b.pending.length) {
+        // xe đang xả: cá chen vào ngay tại cổng; nếu ô đang có cá thì đàn phía sau lùi 1 ô nhường chỗ
+        if (slot.color) this.makeRoom(i);
+        const s2 = this.slots[i];
         const color = b.pending.shift()!;
-        slot.color = color;
-        slot.source = b.id;
-        slot.srcIndex = b.pendingIdx.shift() ?? -1;
-        slot.traveled = 0;
+        s2.color = color;
+        s2.source = b.id;
+        s2.srcIndex = b.pendingIdx.shift() ?? -1;
+        s2.traveled = 0;
         this.events.push({ type: 'insert', bus: b.id, slot: i, color });
-      }
+      } else if (slot.color) this.tryAbsorb(b, slot, i);
     }
     this.checkEnd(dt);
+  }
+
+  /**
+   * Nhường chỗ ở ô i (đang có cá) cho cá chen vào: các nấc từ ô i ngược về phía sau (các ô chưa tới cổng)
+   * lùi mỗi nấc 1 ô, tới ô trống gần nhất phía sau. Luôn có ô trống vì tap đã trừ hàng chờ khỏi chỗ trống.
+   */
+  private makeRoom(i: number) {
+    const C = this.C;
+    let k = -1;
+    for (let d = 1; d < C; d++) {
+      const j = (i - d + C) % C;
+      if (!this.slots[j].color) {
+        k = j;
+        break;
+      }
+    }
+    if (k < 0) return;
+    for (let m = k; m !== i; m = (m + 1) % C) this.slots[m] = this.slots[(m + 1) % C];
+    this.slots[i] = { color: null, source: -1, srcIndex: -1, traveled: 0 };
+    this.events.push({ type: 'shift', from: i, to: k });
   }
 
   /** có xe đang mở (chưa ✓, còn chỗ, không rỗng) mà nấc ở đuôi cùng màu c */

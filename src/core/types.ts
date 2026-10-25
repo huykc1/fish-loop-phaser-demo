@@ -85,6 +85,8 @@ export interface Bus {
 export type SimEvent =
   | { type: 'release'; bus: number; colors: FishColor[] }
   | { type: 'insert'; bus: number; slot: number; color: FishColor }
+  /** cá chen vào ô `from`: các nấc từ `from` lùi về sau 1 ô, tới ô trống `to` (đi ngược chiều chảy) */
+  | { type: 'shift'; from: number; to: number }
   | { type: 'absorb'; bus: number; slot: number; color: FishColor; s: number; index: number }
   | { type: 'complete'; bus: number; color: FishColor }
   | { type: 'pipeFull'; bus: number }
